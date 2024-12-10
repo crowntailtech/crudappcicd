@@ -47,9 +47,9 @@ pipeline {
                         export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
                         echo "Listing terraform directory contents:"
                         ls -la terraform/
-                        terraform init terraform/
-                        terraform plan -var-file="terraform/variables.tfvars" -out=tfplan terraform/
-                        terraform apply -auto-approve
+                        terraform -chdir=terraform init
+                        terraform -chdir=terraform plan -var-file="variables.tfvars" -out=tfplan
+                        terraform -chdir=terraform apply -auto-approve
                     '''
                 }
             }
