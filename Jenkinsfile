@@ -48,7 +48,7 @@ pipeline {
                         echo "Listing terraform directory contents:"
                         ls -la terraform/
                         terraform -chdir=terraform init
-                        terraform -chdir=terraform plan -var-file="variables.tfvars" -out=tfplan
+                        terraform -chdir=terraform plan -var-file=terraform.tfvars -out=tfplan
                         terraform -chdir=terraform apply -auto-approve
                     '''
                 }
