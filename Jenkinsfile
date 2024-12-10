@@ -27,7 +27,7 @@ pipeline {
                             ${scannerHome}/bin/sonar-scanner \
                                 -Dsonar.projectKey=library-cicd \
                                 -Dsonar.sources=. \
-                                -Dsonar.host.url=http://3.80.133.83:9000 \
+                                -Dsonar.host.url=http://3.92.186.124:9000 \
                                 -Dsonar.login=${env.SONAR_TOKEN}
                         """
                     }
