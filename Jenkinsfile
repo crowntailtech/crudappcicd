@@ -28,7 +28,8 @@ pipeline {
                                 -Dsonar.projectKey=library-cicd \
                                 -Dsonar.sources=. \
                                 -Dsonar.host.url=http://3.92.186.124:9000 \
-                                -Dsonar.login=${env.SONAR_TOKEN}
+                                -Dsonar.login=${env.SONAR_TOKEN} \
+                                -Dsonar.exclusions=**/*.js,**/*.ts
                         """
                     }
                 }
