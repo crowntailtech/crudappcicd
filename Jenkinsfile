@@ -26,10 +26,10 @@ pipeline {
                             export PATH=$JAVA_HOME/bin:$PATH
                             ${scannerHome}/bin/sonar-scanner \
                                 -Dsonar.projectKey=library-cicd \
-                                -Dsonar.sources=. \
+                                -Dsonar.sources=backend \
                                 -Dsonar.host.url=http://3.92.186.124:9000 \
                                 -Dsonar.login=${env.SONAR_TOKEN} \
-                                -Dsonar.exclusions=**/*.js,**/*.ts
+                                -Dsonar.exclusions=**/*.js,**/*.ts,**/*.html,**/*.css,**/frontend/**
                         """
                     }
                 }
