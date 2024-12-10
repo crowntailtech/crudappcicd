@@ -76,8 +76,8 @@ pipeline {
                             # Run database migrations
                             python3 backend/librarymgmt/manage.py migrate
 
-                            # Restart the application
-                            nohup python3 backend/librarymgmt/manage.py runserver 0.0.0.0:8000 &
+                            # Restart the application in background with no reload
+                            nohup python3 backend/librarymgmt/manage.py runserver 0.0.0.0:8000 --noreload > /dev/null 2>&1 &
                             EOF
                         """
                     }
