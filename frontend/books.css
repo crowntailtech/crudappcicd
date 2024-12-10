@@ -1,0 +1,142 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar h1 {
+  margin: 0;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+#user-welcome {
+  color: white;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+button {
+  background-color: white;
+  color: #4CAF50;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #45a049;
+  color: white;
+}
+
+/* Book List */
+#book-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  padding: 20px;
+}
+
+.book-box {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 15px;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.book-box h3 {
+  margin-top: 0;
+}
+
+.book-box button {
+  margin: 5px 0;
+  width: 100%;
+}
+
+/* Add, Edit, and Assign Forms */
+#add-book-form,
+#edit-book-form,
+#assign-book-form {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+#add-book-form h2,
+#edit-book-form h2,
+#assign-book-form h2 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+#add-book-form label,
+#edit-book-form label,
+#assign-book-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+#add-book-form input,
+#edit-book-form input,
+#assign-book-form input {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+#edit-book-form button,
+#assign-book-form button {
+  width: calc(50% - 5px);
+  margin-right: 10px;
+  padding: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#cancel-edit-btn,
+#cancel-assign-btn {
+  background-color: red;
+  color: white;
+}
+
+#cancel-edit-btn:hover,
+#cancel-assign-btn:hover {
+  background-color: darkred;
+}

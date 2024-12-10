@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Management - Home</title>
+  <link rel="stylesheet" href="home.css">
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <h1>Library Management</h1>
+      <nav>
+        <a href="home.html">Home</a>
+        <a href="books.html">Books</a>
+        <a href="profile.html">My Profile</a>
+        <span id="user-welcome"></span>
+        <button id="login-btn">Login</button>
+        <button id="logout-btn" style="display: none;">Logout</button>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section id="book-list" class="book-container">
+      <!-- Books will be dynamically loaded via API -->
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2024 Library Management</p>
+  </footer>
+  <script src="home.js"></script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Management - Books</title>
+  <link rel="stylesheet" href="books.css">
+</head>
+<body>
+  <header>
+    <div class="navbar">
+      <h1>Library Management</h1>
+      <nav>
+        <a href="home.html">Home</a>
+        <a href="books.html">Books</a>
+        <a href="profile.html">My Profile</a>
+        <span id="user-welcome"></span>
+        <button id="login-btn">Login</button>
+        <button id="logout-btn" style="display: none;">Logout</button>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <!-- Books Section -->
+    <section id="book-list">
+      <!-- Books will be dynamically loaded here -->
+    </section>
+
+    <!-- Add Book Form -->
+    <section id="add-book-form">
+      <h2>Add a New Book</h2>
+      <form id="book-form" enctype="multipart/form-data">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="author" required>
+        <label for="image">Book Image:</label>
+        <input type="file" id="image" name="image" accept="image/*">
+        <button type="submit">Add Book</button>
+      </form>
+    </section>
+
+    <!-- Edit Book Form -->
+    <section id="edit-book-form" style="display: none;">
+      <h2>Edit Book</h2>
+      <form id="edit-form">
+        <label for="edit-title">Title:</label>
+        <input type="text" id="edit-title" name="title" required>
+        <label for="edit-author">Author:</label>
+        <input type="text" id="edit-author" name="author" required>
+        <label for="edit-image">Image:</label>
+        <input type="file" id="edit-image" name="image">
+        <button type="submit">Update</button>
+        <button type="button" id="cancel-edit-btn">Cancel</button>
+      </form>
+    </section>
+
+
+    <!-- Assign Book Form -->
+    <section id="assign-book-form" style="display: none;">
+      <h2>Assign Book</h2>
+      <form id="assign-form">
+        <p id="assign-book-title"></p>
+        <label for="assign-to">Assign to:</label>
+        <input type="text" id="assign-to" name="assign_to" required>
+        <button type="submit">Assign</button>
+        <button type="button" id="cancel-assign-btn">Cancel</button>
+      </form>
+    </section>
+  </main>
+  <footer>
+    <p>&copy; 2024 Library Management</p>
+  </footer>
+  <script src="books.js"></script>
+</body>
+</html>
