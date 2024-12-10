@@ -8,7 +8,7 @@ variable "key_name" {
 
 variable "backend_ami" {
   description = "AMI ID for the EC2 instance"
-  default     = "ami-0c02fb55956c7d316" # Replace with your preferred AMI
+  default     = "ami-0e2c8caa4b6378d8c" # Replace with your preferred AMI
 }
 
 variable "frontend_bucket_name" {

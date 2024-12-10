@@ -24,40 +24,43 @@ resource "aws_security_group" "backend_sg" {
 }
 
 resource "aws_instance" "backend_instance" {
-  ami           = var.backend_ami
+  ami           = var.backend_ami # Use an Ubuntu AMI ID here
   instance_type = var.instance_type
   key_name      = var.key_name
 
   security_groups = [aws_security_group.backend_sg.name]
 
   tags = {
-    Name = "backend-instance"
+    Name = "backend-server"
   }
 
   user_data = <<-EOF
                 #!/bin/bash
-                sudo yum update -y
+                sudo apt update -y
+                sudo apt upgrade -y
 
                 # Install Python and dependencies
-                sudo yum install python3 python3-pip git -y
+                sudo apt install -y python3 python3-pip git virtualenv
 
                 # Clone the project repository from GitHub
-                git clone <your-git-repo-url> /home/ec2-user/library_mgmt
-                cd /home/ec2-user/library_mgmt/backend/librarymgmt
+                git clone https://github.com/crowntailtech/crudappcicd.git /home/ubuntu/library_mgmt
+                cd /home/ubuntu/library_mgmt/backend/librarymgmt
 
-                # Install virtual environment and activate it
-                python3 -m pip install --user virtualenv
+                # Create and activate virtual environment
                 python3 -m virtualenv venv
                 source venv/bin/activate
 
-                # Install project dependencies
+                # Install Django and project dependencies
                 pip install -r requirements.txt
 
                 # Migrate the database
-                python manage.py migrate
+                python3 manage.py migrate
 
-                # Start the Django development server
-                nohup python manage.py runserver 0.0.0.0:8000 &
+                # Collect static files
+                python3 manage.py collectstatic --noinput
+
+                # Run the Django development server
+                nohup python3 manage.py runserver 0.0.0.0:8000 &
                 EOF
 }
 
