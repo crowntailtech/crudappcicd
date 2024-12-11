@@ -2,10 +2,9 @@
 async function fetchBooks() {
   try {
     const token = localStorage.getItem('token');
-    const userId = localStorage.getItem('userId');
     if (!token) throw new Error('Unauthorized: Please log in again.');
 
-    const response = await fetch('http://127.0.0.1:8000/api/books/', {
+    const response = await fetch('http://3.93.180.211:8000/api/books/', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -23,7 +22,7 @@ async function fetchBooks() {
     console.error('Error fetching books:', error);
     alert(error.message || 'Failed to fetch books.');
     if (error.message.includes('Unauthorized')) {
-      handleLogout(); // Redirect to login if unauthorized
+      handleLogout();
     }
   }
 }
@@ -31,30 +30,164 @@ async function fetchBooks() {
 // Display Books
 function displayBooks(books) {
   const bookList = document.getElementById('book-list');
-  bookList.innerHTML = ''; // Clear any existing content
+  bookList.innerHTML = '';
 
   books.forEach((book) => {
     const bookBox = document.createElement('div');
     bookBox.className = 'book-box';
 
-    // Prepend base URL to the image path
-    const imageUrl = book.image ? `http://127.0.0.1:8000${book.image}` : 'placeholder.png';
+    const imageUrl = book.image ? `http://3.93.180.211:8000${book.image}` : 'placeholder.png';
 
     bookBox.innerHTML = `
       <img src="${imageUrl}" alt="${book.title}" />
       <h3>${book.title}</h3>
       <p>Author: ${book.author}</p>
       <p>Assigned to: ${book.assigned_to || 'None'}</p>
-      <button onclick="showEditForm(${book.id}, '${book.title}', '${book.author}')">Edit</button>
-      <button onclick="deleteBook(${book.id})">Delete</button>
-      <button onclick="showAssignForm(${book.id}, '${book.title}')">Assign</button>
+      <button class="edit-btn" data-id="${book.id}" data-title="${book.title}" data-author="${book.author}">Edit</button>
+      <button class="delete-btn" data-id="${book.id}">Delete</button>
+      <button class="assign-btn" data-id="${book.id}" data-title="${book.title}">Assign</button>
     `;
     bookList.appendChild(bookBox);
   });
+
+  // Attach event listeners after rendering
+  document.querySelectorAll('.delete-btn').forEach((btn) =>
+    btn.addEventListener('click', (e) => deleteBook(e.target.dataset.id))
+  );
+
+  document.querySelectorAll('.edit-btn').forEach((btn) =>
+    btn.addEventListener('click', (e) =>
+      showEditForm(e.target.dataset.id, e.target.dataset.title, e.target.dataset.author)
+    )
+  );
+
+  document.querySelectorAll('.assign-btn').forEach((btn) =>
+    btn.addEventListener('click', (e) =>
+      showAssignForm(e.target.dataset.id, e.target.dataset.title)
+    )
+  );
 }
 
-document.getElementById('logout-btn')?.addEventListener('click', () => {
-  handleLogout();
+// Add Book
+// Add Book
+document.getElementById('book-form').addEventListener('submit', async (event) => {
+  event.preventDefault(); // Prevent the default form submission behavior
+
+  const title = document.getElementById('title').value.trim();
+  const author = document.getElementById('author').value.trim();
+  const imageInput = document.getElementById('image');
+
+  if (!title || !author) {
+    alert('Please fill in all fields.');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('title', title);
+  formData.append('author', author);
+  if (imageInput.files[0]) {
+    formData.append('image', imageInput.files[0]);
+  }
+
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('Unauthorized: Please log in again.');
+
+    const response = await fetch('http://3.93.180.211:8000/api/books/', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to add book.');
+    }
+
+    alert('Book added successfully');
+    document.getElementById('book-form').reset();
+    fetchBooks();
+  } catch (error) {
+    console.error('Error adding book:', error);
+    alert(error.message || 'Failed to add book.');
+  }
+});
+
+
+// Delete Book
+async function deleteBook(bookId) {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('Unauthorized: Please log in again.');
+
+    const response = await fetch(`http://3.93.180.211:8000/api/books/${bookId}/`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to delete book.');
+    }
+
+    alert('Book deleted successfully');
+    fetchBooks();
+  } catch (error) {
+    console.error('Error deleting book:', error);
+    alert(error.message || 'Failed to delete book.');
+  }
+}
+
+// Assign Book
+document.getElementById('assign-form').addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const bookId = document.getElementById('assign-form').dataset.bookId;
+  const assignTo = document.getElementById('assign-to').value.trim();
+
+  if (!assignTo) {
+    alert('Please provide a name to assign the book.');
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('Unauthorized: Please log in again.');
+
+    const response = await fetch(`http://3.93.180.211:8000/api/books/${bookId}/assign/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ assigned_to: assignTo }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to assign book.');
+    }
+
+    alert(`Book assigned to ${assignTo}`);
+    fetchBooks();
+    document.getElementById('assign-book-form').style.display = 'none';
+  } catch (error) {
+    console.error('Error assigning book:', error);
+    alert(error.message || 'Failed to assign book.');
+  }
+});
+
+// Show Assign Form
+function showAssignForm(bookId, bookTitle) {
+  document.getElementById('assign-book-form').style.display = 'block';
+  document.getElementById('assign-book-title').textContent = `Assign Book: ${bookTitle}`;
+  document.getElementById('assign-form').dataset.bookId = bookId;
+}
+
+// Cancel Assign Form
+document.getElementById('cancel-assign-btn').addEventListener('click', () => {
+  document.getElementById('assign-book-form').style.display = 'none';
 });
 
 // Show Edit Form
@@ -62,10 +195,10 @@ function showEditForm(bookId, bookTitle, bookAuthor) {
   document.getElementById('edit-book-form').style.display = 'block';
   document.getElementById('edit-title').value = bookTitle;
   document.getElementById('edit-author').value = bookAuthor;
-  document.getElementById('edit-form').dataset.bookId = bookId; // Store book ID in the form
+  document.getElementById('edit-form').dataset.bookId = bookId;
 }
 
-// Handle Edit Submission
+// Edit Book
 document.getElementById('edit-form').addEventListener('submit', async (event) => {
   event.preventDefault();
 
@@ -78,14 +211,14 @@ document.getElementById('edit-form').addEventListener('submit', async (event) =>
   formData.append('title', title);
   formData.append('author', author);
   if (imageInput.files[0]) {
-    formData.append('image', imageInput.files[0]); // Include image if selected
+    formData.append('image', imageInput.files[0]);
   }
 
   try {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Unauthorized: Please log in again.');
 
-    const response = await fetch(`http://127.0.0.1:8000/api/books/${bookId}/`, {
+    const response = await fetch(`http://3.93.180.211:8000/api/books/${bookId}/`, {
       method: 'PUT',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -106,46 +239,18 @@ document.getElementById('edit-form').addEventListener('submit', async (event) =>
   }
 });
 
-// Cancel Edit
+// Cancel Edit Form
 document.getElementById('cancel-edit-btn').addEventListener('click', () => {
   document.getElementById('edit-book-form').style.display = 'none';
 });
 
-// Handle Logout
-function handleLogout() {
-  localStorage.removeItem('token'); // Clear token
-  localStorage.removeItem('userId'); // Clear user ID
-  alert('You have been logged out.');
-  window.location.href = 'login.html'; // Redirect to login
-}
-
-// Update Navbar
-function updateNavbar() {
-  const userWelcome = document.getElementById('user-welcome');
-  const loginBtn = document.getElementById('login-btn');
-  const logoutBtn = document.getElementById('logout-btn');
-  const token = localStorage.getItem('token');
-
-  if (token) {
-    const loggedInUser = localStorage.getItem('userName');
-    userWelcome.textContent = `Welcome, ${loggedInUser}`;
-    loginBtn.style.display = 'none';
-    logoutBtn.style.display = 'inline-block';
-  } else {
-    userWelcome.textContent = '';
-    loginBtn.style.display = 'inline-block';
-    logoutBtn.style.display = 'none';
-  }
-}
-
-// Initialize Page
+// Initialize
 window.onload = () => {
   const token = localStorage.getItem('token');
   if (token) {
-    fetchBooks(); // Fetch books
+    fetchBooks();
   } else {
     alert('Unauthorized: Please log in.');
-    window.location.href = 'login.html'; // Redirect to login
+    window.location.href = 'login.html';
   }
-  updateNavbar();
 };

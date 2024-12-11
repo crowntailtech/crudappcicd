@@ -6,7 +6,7 @@ async function fetchBooks() {
       throw new Error('Unauthorized: No token found. Redirecting to login.');
     }
 
-    const response = await fetch('http://127.0.0.1:8000/api/books/', {
+    const response = await fetch('http://3.93.180.211:8000/api/books/', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ function displayBooks(books) {
 
   books.forEach((book) => {
     const bookBox = document.createElement('div');
-    const imageUrl = book.image ? `http://127.0.0.1:8000${book.image}` : 'placeholder.png';
+    const imageUrl = book.image ? `http://3.93.180.211:8000${book.image}` : 'placeholder.png';
     bookBox.className = 'book-box';
     bookBox.innerHTML = `
       <img src="${imageUrl}" alt="${book.title}" class="book-image" />
@@ -78,7 +78,7 @@ async function updateNavbar() {
 
   if (token) {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/profile/${userId}/`, {
+      const response = await fetch(`http://3.93.180.211:8000/api/profile/${userId}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

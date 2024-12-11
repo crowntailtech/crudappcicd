@@ -8,7 +8,7 @@ async function fetchProfile() {
       throw new Error('Unauthorized: No token or user ID found.');
     }
 
-    const response = await fetch(`http://127.0.0.1:8000/api/profile/${userId}/`, {
+    const response = await fetch(`http://3.93.180.211:8000/api/profile/${userId}/`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ document.getElementById('update-profile-form')?.addEventListener('submit', async
   };
 
   try {
-    const response = await fetch(`http://127.0.0.1:8000/api/profile/${userId}/`, {
+    const response = await fetch(`http://3.93.180.211:8000/api/profile/${userId}/`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
