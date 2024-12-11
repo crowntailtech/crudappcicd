@@ -34,7 +34,7 @@ document.getElementById('login-form')?.addEventListener('submit', async (event) 
     localStorage.setItem('token', data.token);
     localStorage.setItem('userId', data.user_id);
     alert('Login successful');
-    window.location.href = 'home.html';
+    window.location.href = 'index.html';
   } catch (error) {
     console.error('Error during login:', error);
     alert(error.message || 'Login failed. Please try again.');
